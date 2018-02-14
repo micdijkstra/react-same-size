@@ -1,0 +1,35 @@
+{
+  "name": "react-same-size",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "clean": "rm -rf public",
+    "start": "npm run clean && concurrently \"npm run build:dev\" \"npm run prettier:watch\"",
+    "prettier:watch": "onchange 'src/**/*.js' 'src/**/*.scss' -- prettier --write {{changed}}",
+    "build:dev": "parcel src/index.html --out-dir public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/joseph-tohdjojo/react-same-size.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/joseph-tohdjojo/react-same-size/issues"
+  },
+  "homepage": "https://github.com/joseph-tohdjojo/react-same-size#readme",
+  "dependencies": {
+    "babel-preset-env": "1.6.1",
+    "babel-preset-react": "6.24.1",
+    "babel-preset-stage-2": "6.24.1",
+    "babel-preset-stage-3": "6.24.1",
+    "concurrently": "3.5.1",
+    "onchange": "3.3.0",
+    "parcel-bundler": "^1.5.1",
+    "prettier": "1.10.2",
+    "react": "16.2.0",
+    "react-dom": "16.2.0"
+  }
+}
