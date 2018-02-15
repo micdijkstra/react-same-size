@@ -1,30 +1,57 @@
 import React from 'react'
 
 class Container extends React.Component {
-  state = {}
+  constructor(props) {
+    super(props)
 
-  registerChild = obj => {
-    const newHeight = obj.element && obj.element.clientHeight
-
-    if (!this.state[obj.id]) {
-      this.setState({ [obj.id]: newHeight })
-    } else {
-      const existingHeight = this.state[obj.id]
-
-      if (existingHeight < newHeight) {
-        this.setState({ [obj.id]: newHeight })
-      }
+    this.state = {
+      height: 0,
     }
 
-    return newHeight
+    this.checks = 0
+    this.newHeight = 0
+
+    this.resetHeight = this.resetHeight.bind(this)
+  }
+
+  componentDidMount() {
+    window.addEventListener('resize', this.resetHeight)
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('resize', this.resetHeight)
+  }
+
+  resetHeight() {
+    this.checks = 0
+    this.setState({
+      height: 0,
+    })
+  }
+
+  registerChild(height) {
+    const { children } = this.props
+    this.checks = this.checks + 1
+
+    if (height > this.newHeight) {
+      this.newHeight = height
+    }
+
+    // Process all children before setting height
+    if (this.checks === children.length) {
+      this.setState({ height: this.newHeight })
+    }
   }
 
   render() {
-    const { registerChild, state: heights } = this
-    const { children, render } = this.props
-    const obj = { registerChild, heights }
+    const children = React.Children.map(this.props.children, (child, index) => {
+      return React.cloneElement(child, {
+        height: this.state.height,
+        registerChild: height => this.registerChild(height),
+      })
+    })
 
-    return render ? render(obj) : children(obj)
+    return <div>{children}</div>
   }
 }
 

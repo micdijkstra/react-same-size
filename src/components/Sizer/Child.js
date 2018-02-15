@@ -1,20 +1,31 @@
 import React from 'react'
 
 class Child extends React.Component {
-  state = { height: 'auto' }
+  constructor(props) {
+    super(props)
 
-  thisRef = element => {
-    const { childId: id } = this.props
-    const { registerChild } = this.props.utils
-    registerChild({ element, id })
+    this.updateHeight = this.updateHeight.bind(this)
+  }
+
+  componentDidUpdate() {
+    this.updateHeight()
+  }
+
+  componentDidMount() {
+    this.updateHeight()
+  }
+
+  updateHeight() {
+    const height = this.element.clientHeight
+    this.props.registerChild(height)
   }
 
   render() {
-    const { childId, children, utils } = this.props
-    const height = utils.heights[childId] || 'auto'
+    let { height } = this.props
+    if (height <= 0) height = 'auto'
     return (
-      <div ref={this.thisRef} style={{ height, backgroundColor: 'tomato' }}>
-        {children()}
+      <div ref={el => (this.element = el)} style={{ height: height }}>
+        {this.props.children}
       </div>
     )
   }

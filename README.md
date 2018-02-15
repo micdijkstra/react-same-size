@@ -1,4 +1,3 @@
 # react-same-size
 
-### To-do:
-Figure out a way to get rid of the `utils` prop in the child component
+Compound component implementation of [react-same-size](https://github.com/joseph-tohdjojo/react-same-size)
